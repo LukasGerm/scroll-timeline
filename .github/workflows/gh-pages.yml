@@ -47,18 +47,6 @@ jobs:
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build
         run: "npm run build"
-      - name: Checkout WPT
-        run: "npm run test-setup"
-      - name: WPT hosts
-        run: "./test/wpt/wpt make-hosts-file | sudo tee -a /etc/hosts"
-      - name: WPT tests
-        run: "npm run test:wpt"
-      - name: Expected results
-        run: "npm run test:compare"
-      - name: Test results summary
-        run: |
-          echo "Passed $(grep '/css' ./test/report/summary.txt |  grep -c '^PASS' ) of $(grep '/css' ./test/report/summary.txt | grep -c '^') css tests" >> $GITHUB_STEP_SUMMARY
-          echo "Passed $(grep -v '/css' ./test/report/summary.txt |  grep -c '^PASS' ) of $(grep -v '/css' ./test/report/summary.txt | grep -c '^') waapi tests" >> $GITHUB_STEP_SUMMARY
       - name: Clean build files
         run: "rm -rf node_modules test/wpt"
       - name: Upload artifact
